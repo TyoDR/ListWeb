@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>List Web Github</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box; /* Membuat padding & border termasuk dalam width/height */
+      margin: 0; /* Reset margin dasar */
+      padding: 0; /* Reset padding dasar */
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0d1117;
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #matrix-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    .header {
+      /* Pengaturan lebar dan posisi horizontal */
+      width: 90%;
+      max-width: 500px;
+      margin: 1rem auto 0 auto; /* Margin atas, tengah secara horizontal */
+
+      /* Pengaturan tampilan */
+      padding: 1rem 0; /* Padding vertikal untuk teks di dalam header */
+      background: linear-gradient(90deg, #1a2a44, #2e4057);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #e0e7ff;
+      text-align: center; /* Teks judul di tengah */
+      position: sticky;
+      top: 1rem;
+      z-index: 10;
+      border-radius: 8px;
+    }
+
+    .game-list {
+      /* Lebar dan posisi horizontal DISAMAKAN PERSIS dengan .header */
+      width: 90%;
+      max-width: 500px;
+      margin: 1rem auto; /* Margin atas & bawah, tengah secara horizontal */
+
+      /* Padding internal game-list bisa 0 jika tombol ingin mepet, */
+      /* atau tambahkan jika ingin ada jarak transparan di dalam game-list. */
+      /* padding: 0; (sudah di-reset oleh *) */
+      display: grid;
+      gap: 0.5rem;
+      /* Tetap transparan (tidak ada background, shadow, dll.) */
+    }
+
+    .game-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%; /* Mengisi sel grid */
+      padding: 0.8rem; /* Padding di dalam tombol untuk teks */
+      text-align: center;
+      text-decoration: none;
+      color: #e0e7ff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(5px);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .game-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.5s ease, height 0.5s ease;
+    }
+
+    .game-button:active::before {
+      width: 150%;
+      height: 150%;
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        width: 92%;
+        max-width: 450px;
+        font-size: 1.2rem;
+        padding: 0.8rem 0; /* Padding vertikal */
+        top: 0.8rem;
+        margin-top: 0.8rem;
+      }
+
+      .game-list {
+        /* Lebar dan posisi horizontal DISAMAKAN PERSIS dengan .header */
+        width: 92%;
+        max-width: 450px;
+        /* padding: 0; (sudah di-reset oleh *) */
+        gap: 0.4rem;
+        margin-top: 0.8rem; /* Jarak vertikal dari header */
+      }
+
+      .game-button {
+        font-size: 0.85rem;
+        padding: 0.7rem; /* Padding di dalam tombol */
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-canvas"></canvas>
+  <div class="header">
+    List Web Github
+  </div>
+  <div class="game-list">
+    <a href="https://adiazrestu.github.io/" target="_blank" class="game-button">Adiaz Restu</a>
+    <a href="https://tyodr.github.io/ChatRealTime/" target="_blank" class="game-button">Chat Real-time</a>
+    <a href="https://tyodr.github.io/MarioBros.github.io/analog-clock/" target="_blank" class="game-button">Analog Clock</a>
+    <a href="https://tyodr.github.io/Tetris/" target="_blank" class="game-button">Tetris</a>
+    <a href="https://tyodr.github.io/SuperMario/" target="_blank" class="game-button">Super Mario Bros v1</a>
+    <a href="https://tyodr.github.io/Supermariobros/" target="_blank" class="game-button">Super Mario Bros v2</a>
+    <a href="https://tyodr.github.io/Ai-Chat/" target="_blank" class="game-button">Ai Chat TyoDR</a>
+    <a href="https://tyodr.github.io/Music-Disk/" target="_blank" class="game-button">Music Disk</a>
+    <a href="https://tyodr.github.io/Calendar/" target="_blank" class="game-button">Calendar</a>
+    </div>
+
+  <script>
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let columns = 0; // Deklarasi di scope yang lebih luas
+    const drops = [];
+    const fontSize = 14;
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+
+    function initializeDrops() {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+      columns = Math.floor(canvas.width / fontSize);
+      drops.length = 0;
+      for (let x = 0; x < columns; x++) {
+        drops[x] = 1 + Math.floor(Math.random() * (canvas.height / fontSize));
+      }
+    }
+    initializeDrops();
+
+    function draw() {
+      ctx.fillStyle = 'rgba(13, 17, 23, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff00';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < columns; i++) {
+        if (typeof drops[i] !== 'undefined') {
+            const text = chars.charAt(Math.floor(Math.random() * chars.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i]++;
+        }
+      }
+    }
+
+    let intervalId = setInterval(draw, 33);
+
+    window.addEventListener('resize', () => {
+      initializeDrops(); // Panggil initializeDrops yang sudah mencakup pengaturan canvas.height/width
+    });
+  </script>
+</body>
+</html>
