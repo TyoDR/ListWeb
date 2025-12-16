@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
-      box-sizing: border-box; /* Membuat padding & border termasuk dalam width/height */
-      margin: 0; /* Reset margin dasar */
-      padding: 0; /* Reset padding dasar */
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -29,13 +29,10 @@
     }
 
     .header {
-      /* Pengaturan lebar dan posisi horizontal */
       width: 90%;
       max-width: 500px;
-      margin: 1rem auto 0 auto; /* Margin atas, tengah secara horizontal */
-
-      /* Pengaturan tampilan */
-      padding: 1rem 0; /* Padding vertikal untuk teks di dalam header */
+      margin: 1rem auto 0 auto;
+      padding: 1rem 0;
       background: linear-gradient(90deg, #1a2a44, #2e4057);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       font-size: 1.5rem;
@@ -43,7 +40,7 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: #e0e7ff;
-      text-align: center; /* Teks judul di tengah */
+      text-align: center;
       position: sticky;
       top: 1rem;
       z-index: 10;
@@ -51,21 +48,19 @@
     }
 
     .game-list {
-      /* Lebar dan posisi horizontal DISAMAKAN PERSIS dengan .header */
       width: 90%;
       max-width: 500px;
-      margin: 1rem auto; /* Margin atas & bawah, tengah secara horizontal */
+      margin: 1rem auto;
       display: grid;
       gap: 0.5rem;
-      /* Tetap transparan (tidak ada background, shadow, dll.) */
     }
 
     .game-button {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%; /* Mengisi sel grid */
-      padding: 0.8rem; /* Padding di dalam tombol untuk teks */
+      width: 100%;
+      padding: 0.8rem;
       text-align: center;
       text-decoration: none;
       color: #e0e7ff;
@@ -111,22 +106,21 @@
         width: 92%;
         max-width: 450px;
         font-size: 1.2rem;
-        padding: 0.8rem 0; /* Padding vertikal */
+        padding: 0.8rem 0;
         top: 0.8rem;
         margin-top: 0.8rem;
       }
 
       .game-list {
-        /* Lebar dan posisi horizontal DISAMAKAN PERSIS dengan .header */
         width: 92%;
         max-width: 450px;
         gap: 0.4rem;
-        margin-top: 0.8rem; /* Jarak vertikal dari header */
+        margin-top: 0.8rem;
       }
 
       .game-button {
         font-size: 0.85rem;
-        padding: 0.7rem; /* Padding di dalam tombol */
+        padding: 0.7rem;
       }
     }
   </style>
@@ -141,10 +135,12 @@
     <a href="https://tyodr.github.io/RealtimeMultiplayerChat/" target="_blank" class="game-button">Multiplayer Chat Ai</a>
     <a href="https://tyodr.github.io/ChatRealTime/" target="_blank" class="game-button">Chat Real-time</a>
     <a href="https://tyodr.github.io/MarioBros.github.io/analog-clock/" target="_blank" class="game-button">Analog Clock</a>
+    
     <a href="https://tyodr.github.io/TetrisClassic-/?lan=en" target="_blank" class="game-button">Tetris</a>
+    <a href="https://tyodr.github.io/TetrisNeon/" target="_blank" class="game-button">Tetris Neon (Support Gamepad)</a>
+    
     <a href="https://tyodr.github.io/SuperMario/" target="_blank" class="game-button">Super Mario Bros v1</a>
     <a href="https://tyodr.github.io/Supermariobros/" target="_blank" class="game-button">Super Mario Bros v2</a>
-    
     <a href="https://tyodr.github.io/GamepadTester/" target="_blank" class="game-button">Gamepad Tester</a>
     
     <a href="https://tyodr.github.io/AiChat/" target="_blank" class="game-button">Ai Chat</a>
@@ -166,7 +162,7 @@
   <script>
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
-    let columns = 0; // Deklarasi di scope yang lebih luas
+    let columns = 0;
     const drops = [];
     const fontSize = 14;
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
@@ -189,7 +185,7 @@
       ctx.font = fontSize + 'px monospace';
 
       for (let i = 0; i < columns; i++) {
-        if (typeof drops[i] !== 'undefined') { // Tambahkan pengecekan ini
+        if (typeof drops[i] !== 'undefined') {
             const text = chars.charAt(Math.floor(Math.random() * chars.length));
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
